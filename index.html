@@ -1,0 +1,86 @@
+<html>
+<head>
+    <title>covid19 tracker</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    
+   
+</head>
+<style>
+    body{
+        background-color: black;
+        color: white;
+    }
+    #confirmed{
+     color:yellow;
+    }
+    #active{
+     color:purple;
+    }
+    #deaths{
+      color:red;
+    }
+    #recovered{
+     color:green;
+    }
+</style>
+<body>
+
+<div class="container">
+    <!-- <div class="alert alert-success" role="alert"> -->
+       <center><h1>Covid19 Tracker </h1></center><br>
+       <form id="myform">
+        <div class="form-group">
+            <input type="text" class="form-control" id="country" placeholder="Country" aria-describedby="emailHelp" required>
+          </div>
+         <center><input  type="submit" class="btn btn-primary" value="Get Data"></center>
+        </form>
+        <div id="confirmed"></div>
+        <div id="active"></div>
+        <div id="recovered"></div>
+        <div id="deaths"></div>
+    
+       
+</div>
+
+    
+</body>
+
+<script>
+    const form = document.getElementById("myform")
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        var country = document.getElementById("country").value
+        var url = "https://api.covid19api.com/dayone/country/"+country
+        covidData(url)
+    })
+    async function covidData(url){
+        let response = await  fetch(url)
+        let data = await response.json()
+        console.log(data)
+
+        let length = data.length
+
+        let index = length - 1
+
+        let confirmed = document.getElementById("confirmed")
+        let active = document.getElementById("active")
+        let recovered = document.getElementById("recovered")
+        let deaths = document.getElementById("deaths")
+        
+
+        confirmed.innerHTML =""
+        active.innerHTML =""
+        recovered.innerHTML =""
+        deaths.innerHTML =""
+
+        confirmed.append("Total Confirmed Cases : " + data[index].Confirmed)
+        active.append("Total Active Cases : " + data[index].Active)
+        recovered.append("Total Recovered Cases : " + data[index].Recovered)
+        deaths.append("Total Deaths : " + data[index].Deaths)
+
+       
+
+    }
+</script>
+</html>
